@@ -147,6 +147,12 @@
 #define FSA9280_ID	1
 #define FSA880_ID	2
 
+#ifdef nootgsduos
+#else
+#include <mach/msm72k_otg.h>
+extern void otg_set_mode(int host);
+#endif
+
 struct fsausb_info {
 	struct i2c_client *client;
 	struct fsausb_platform_data *pdata;
@@ -465,6 +471,13 @@ static void fsausb_detect_dev(struct fsausb_info *usbsw, u8 intr)
 					   usbsw->mansw);
 			charger_cb_flag = 1;
 		}
+#ifdef nootgsduos
+#else
+		if (val1 & DEV_USB_OTG) {
+			// otg cable detected
+			otg_set_mode(1);
+		}
+#endif
 		if (val1 & FSA9480_DEV_T1_UART_MASK ||
 				val2 & FSA_DEV_T2_UART_MASK) {
 			if (pdata->uart_cb)
@@ -533,6 +546,11 @@ static void fsausb_detect_dev(struct fsausb_info *usbsw, u8 intr)
 				}
 			charger_cb_flag = 0;
 		}
+#ifdef nootgsduos
+#else
+		// switch otg off
+		otg_set_mode(0);
+#endif
 		if (usbsw->dev1 & FSA9480_DEV_T1_UART_MASK ||
 				usbsw->dev2 & FSA_DEV_T2_UART_MASK) {
 			if (pdata->uart_cb)

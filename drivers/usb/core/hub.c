@@ -1831,8 +1831,10 @@ static int usb_enumerate_device_otg(struct usb_device *udev)
 				 * compliant to revision 2.0 or subsequent
 				 * versions.
 				 */
-				if (le16_to_cpu(desc->bcdOTG) >= 0x0200)
+				/*if (le16_to_cpu(desc->bcdOTG) >= 0x0200)
 					goto out;
+				this will cause compiling errors
+				*/
 
 				/* Legacy B-device i.e compliant to spec
 				 * revision 1.3 expect A-device to set
