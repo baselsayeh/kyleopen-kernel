@@ -19,3 +19,4 @@ ifndef CONFIG_DISABLE_FM_SUPPORT
 obj-$(CONFIG_ARCH_MSM7X27A) += audio_fm.o
 endif
 obj-$(CONFIG_ARCH_MSM7X27A) += audio_mvs.o
+obj-m += vocpcm.o
